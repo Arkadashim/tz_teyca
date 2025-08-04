@@ -89,9 +89,9 @@ export class HomeComponent implements OnInit {
     this.dataSource.data = data.sort((a, b) => {
       const isAsc = sort.direction === "asc";
       switch (sort.active) {
-        case "id":
+        case "user_id":
           return compare(a.user_id, b.user_id, isAsc);
-        case "name":
+        case "fio":
           return compare(a.fio, b.fio, isAsc);
         case "email":
           return compare(a.email, b.email, isAsc);
