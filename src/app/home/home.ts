@@ -36,7 +36,13 @@ import { MatPaginatorModule } from "@angular/material/paginator";
   ],
 })
 export class HomeComponent implements OnInit {
-  displayedColumns: string[] = ["user_id", "fio", "email", "template", "actions"];
+  displayedColumns: string[] = [
+    "user_id",
+    "fio",
+    "email",
+    "template",
+    "actions",
+  ];
   dataSource = new MatTableDataSource<IClient>();
   pageSize = 10;
   pageIndex = 0;
@@ -63,16 +69,14 @@ export class HomeComponent implements OnInit {
       search.search = this.searchQuery;
     }
 
-    this.clientService
-      .getClients(search)
-      .subscribe({
-        next: (clients: any) => {
-          this.dataSource.data = clients;
-        },
-        error: (error: any) => {
-          console.error("Не получен список клиентов!", error);
-        },
-      });
+    this.clientService.getClients(search).subscribe({
+      next: (clients: any) => {
+        this.dataSource.data = clients;
+      },
+      error: (error: any) => {
+        console.error("Не получен список клиентов!", error);
+      },
+    });
   }
 
   applyFilter() {
@@ -88,18 +92,9 @@ export class HomeComponent implements OnInit {
 
     this.dataSource.data = data.sort((a, b) => {
       const isAsc = sort.direction === "asc";
-      switch (sort.active) {
-        case "user_id":
-          return compare(a.user_id, b.user_id, isAsc);
-        case "fio":
-          return compare(a.fio, b.fio, isAsc);
-        case "email":
-          return compare(a.email, b.email, isAsc);
-        case "template":
-          return compare(a.template, b.template, isAsc);
-        default:
-          return 0;
-      }
+      const field = sort.active as keyof IClient;
+
+      return compare(a[field], b[field], isAsc);
     });
   }
 
