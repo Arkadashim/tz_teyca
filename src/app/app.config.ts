@@ -10,6 +10,7 @@ import { IEnvironment } from "@tecya/interfaces";
 import { environment } from "../env/environment";
 import { routes } from "./app.routes";
 import { HttpErrorInterceptor } from "./shared/error";
+import { AuthInterceptor } from "./shared/auth/auth.interceptor";
 
 export const ENVIRONMENT = new InjectionToken<IEnvironment>("ENVIRONMENT");
 
@@ -18,7 +19,9 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimationsAsync("noop"),
-    provideHttpClient(withInterceptors([HttpErrorInterceptor])),
+    provideHttpClient(
+      withInterceptors([HttpErrorInterceptor, AuthInterceptor])
+    ),
     {
       provide: ENVIRONMENT,
       useValue: environment,

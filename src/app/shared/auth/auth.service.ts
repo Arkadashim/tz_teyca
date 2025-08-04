@@ -14,36 +14,40 @@ import { ENVIRONMENT } from "../../app.config";
 export class AuthService {
   private environment = inject<IEnvironment>(ENVIRONMENT);
   private http = inject(HttpClient);
-  private token: string | null = null;
+  private _token: string | null = null;
+
+  get token() {
+    return this._token;
+  }
 
   login(credentials: IAuthCredentials): Observable<any> {
     return this.http
       .post<IAuthResponse>(this.environment.testApiUrl, credentials)
       .pipe(
         tap((response) => {
-          this.token = response.auth_token;
-          if (!this.token) {
+          this._token = response.auth_token;
+          if (!this._token) {
             throw new HttpErrorResponse({
               status: 400,
               statusText: "Не получен токен!",
             });
           }
 
-          localStorage.setItem("authToken", this.token);
+          localStorage.setItem("authToken", this._token);
         })
       );
   }
 
   isAuthenticated(): boolean {
-    if (!this.token) {
-      this.token = localStorage.getItem("authToken");
+    if (!this._token) {
+      this._token = localStorage.getItem("authToken");
     }
 
-    return !!this.token;
+    return !!this._token;
   }
 
   logout(): void {
-    this.token = null;
+    this._token = null;
     localStorage.removeItem("authToken");
   }
 }

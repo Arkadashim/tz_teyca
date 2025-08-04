@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Отправить PUSH</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>Сообщение</mat-label>
+    <textarea
+      matInput
+      [(ngModel)]="message"
+      placeholder="Введите сообщение"
+    ></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="dialogRef.close()">Отмена</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="sendPush()"
+    [disabled]="!message.trim()"
+  >
+    Отправить
+  </button>
+</mat-dialog-actions>
