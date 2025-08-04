@@ -36,7 +36,7 @@ import { MatPaginatorModule } from "@angular/material/paginator";
   ],
 })
 export class HomeComponent implements OnInit {
-  displayedColumns: string[] = ["id", "name", "email", "template", "actions"];
+  displayedColumns: string[] = ["user_id", "fio", "email", "template", "actions"];
   dataSource = new MatTableDataSource<IClient>();
   pageSize = 10;
   pageIndex = 0;

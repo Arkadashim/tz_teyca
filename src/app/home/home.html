@@ -18,13 +18,13 @@
     matSort
     (matSortChange)="sortData($event)"
   >
-    <ng-container matColumnDef="id">
+    <ng-container matColumnDef="user_id">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-      <td mat-cell *matCellDef="let client">{{ client.id }}</td>
+      <td mat-cell *matCellDef="let client">{{ client.user_id }}</td>
     </ng-container>
-    <ng-container matColumnDef="name">
+    <ng-container matColumnDef="fio">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Имя</th>
-      <td mat-cell *matCellDef="let client">{{ client.name }}</td>
+      <td mat-cell *matCellDef="let client">{{ client.fio }}</td>
     </ng-container>
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
