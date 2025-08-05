@@ -6,22 +6,26 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## 1. Страница входа
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+[Компонент](./src/app/login/login.ts)
 
-## Build
+## 2. Ограничение доступа
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Создан [AuhthGuard](./src/app/shared/auth/auth.guard.ts)
 
-## Running unit tests
+## 3. Страница с клиентами
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+[Основной компонент](./src/app/home/home.ts)
 
-## Running end-to-end tests
+## 4. Отправка пуш через модальное окно
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+[Ко](./src/app/shared/components/push-dialog/push-dialog.ts)
+Применяется [здесь](./src/app/home/home.ts)
 
-## Further help
+## 5. Создание клиента
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+[Компонент - форма](./src/app/shared/components/client-form/client-form.ts)
+Применяется [здесь](./src/app/home/home.ts)
+
+[Кастомный компонент с реализацией ControlValueSelect](./src/app/shared/components/phone-number-input/phone-number.ts)
