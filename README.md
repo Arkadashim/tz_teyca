@@ -30,4 +30,6 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 
 Применяется [здесь](./src/app/home/home.ts)
 
-[Кастомный компонент с реализацией ControlValueSelect](./src/app/shared/components/phone-number-input/phone-number.ts)
+
+## ControlValueAccessor
+[Кастомный компонент с реализацией ControlValueAccessor](./src/app/shared/components/phone-number-input/phone-number.ts)
