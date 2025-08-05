@@ -14,6 +14,7 @@ import { AuthService } from "../shared/auth/auth.service";
 import { ClientService } from "../shared/clients";
 import { ClientFormComponent, PushDialogComponent } from "../shared/components";
 import { PhoneInputComponent } from "../shared/components/phone-number-input/phone-number";
+import { compare } from "../shared/helpers";
 import { PhoneNumberPipe } from "../shared/pipes/phone-number.pipe";
 
 @Component({
@@ -35,7 +36,7 @@ import { PhoneNumberPipe } from "../shared/pipes/phone-number.pipe";
     ClientFormComponent,
     PhoneInputComponent,
     PhoneInputComponent,
-    PhoneNumberPipe
+    PhoneNumberPipe,
   ],
 })
 export class HomeComponent implements OnInit {
@@ -123,12 +124,4 @@ export class HomeComponent implements OnInit {
     this.authService.logout();
     this.router.navigate(["/login"]);
   }
-}
-
-function compare(
-  a: number | string | Date,
-  b: number | string | Date,
-  isAsc: boolean
-) {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
