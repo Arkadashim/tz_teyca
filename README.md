@@ -21,6 +21,7 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 ## 4. Отправка пуш через модальное окно
 
 [Компонент](./src/app/shared/components/push-dialog/push-dialog.ts)
+
 Применяется [здесь](./src/app/home/home.ts)
 
 ## 5. Создание клиента
