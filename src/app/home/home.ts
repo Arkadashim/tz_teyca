@@ -72,7 +72,7 @@ export class HomeComponent implements OnInit {
     };
 
     if (this.searchQuery) {
-      search.search = this.searchQuery;
+      search.search = `phone=${this.searchQuery}`;
     }
 
     this.clientService.getClients(search).subscribe({
