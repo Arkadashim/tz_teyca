@@ -14,6 +14,7 @@ import { AuthService } from "../shared/auth/auth.service";
 import { ClientService } from "../shared/clients";
 import { ClientFormComponent, PushDialogComponent } from "../shared/components";
 import { PhoneInputComponent } from "../shared/components/phone-number-input/phone-number";
+import { PhoneNumberPipe } from "../shared/pipes/phone-number.pipe";
 
 @Component({
   standalone: true,
@@ -34,6 +35,7 @@ import { PhoneInputComponent } from "../shared/components/phone-number-input/pho
     ClientFormComponent,
     PhoneInputComponent,
     PhoneInputComponent,
+    PhoneNumberPipe
   ],
 })
 export class HomeComponent implements OnInit {
@@ -42,6 +44,7 @@ export class HomeComponent implements OnInit {
     "fio",
     "email",
     "template",
+    "phone",
     "actions",
   ];
   dataSource = new MatTableDataSource<IClient>();

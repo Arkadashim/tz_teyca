@@ -2,6 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component, EventEmitter, Output } from "@angular/core";
 import { ControlValueAccessor } from "@angular/forms";
 import { MatInput, MatInputModule } from "@angular/material/input";
+import { formatPhoneNumber } from "../../helpers";
 
 @Component({
   selector: "phone-number-input",
@@ -46,7 +47,7 @@ export class PhoneInputComponent
 
     this.error = this.cleanValue.length > 0 && this.cleanValue.length < 11;
 
-    this.displayValue = this.formatDisplayValue(clean); // Сохраняем отображаемое значение с маской
+    this.displayValue = formatPhoneNumber(clean); // Сохраняем отображаемое значение с маской
 
     this.onChange(this.cleanValue);
     this.phoneChange.emit(this.cleanValue);
@@ -58,7 +59,7 @@ export class PhoneInputComponent
   // Реализация ControlValueAccessor
   writeValue(value: string): void {
     this.cleanValue = value || "";
-    this.displayValue = this.formatDisplayValue(this.cleanValue);
+    this.displayValue = formatPhoneNumber(this.cleanValue);
     this.error =
       this.cleanValue.length > 0 && !/^\d{10}$/.test(this.cleanValue);
   }
@@ -73,28 +74,6 @@ export class PhoneInputComponent
 
   setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
-  }
-
-  // Форматирование чистого значения для отображения с маской
-  private formatDisplayValue(value: string): string {
-    if (!value) return "";
-    const digits = value.replace(/\D/g, "");
-    let formatted = `+7`;
-    if (digits.length > 0) {
-      const startIndex = digits[0] === "7" ? 1 : 0;
-      formatted += ` (${digits.slice(startIndex, startIndex + 3)}`;
-      if (digits.length > 3) {
-        formatted += `) ${digits.slice(startIndex + 3, startIndex + 6)}`;
-        if (digits.length > 6) {
-          formatted += `-${digits.slice(startIndex + 6, startIndex + 8)}`;
-          if (digits.length > 8) {
-            formatted += `-${digits.slice(startIndex + 8, startIndex + 10)}`;
-          }
-        }
-      }
-    }
-
-    return formatted;
   }
 
   private clearValue(value: string) {
