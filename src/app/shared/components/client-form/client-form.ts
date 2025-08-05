@@ -18,6 +18,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { ClientService } from "../../clients";
 import { firstValueFrom } from "rxjs";
+import { IClient } from "@tecya/interfaces";
 
 @Component({
   standalone: true,
@@ -39,7 +40,7 @@ export class ClientFormComponent {
 
   constructor(private fb: FormBuilder, private clientService: ClientService) {
     this.form = this.fb.group({
-      name: ["", Validators.required],
+      fio: ["", Validators.required],
       email: ["", [Validators.required, Validators.email]],
       template: ["Тестовый", Validators.required],
     });

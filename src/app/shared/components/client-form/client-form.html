@@ -1,8 +1,8 @@
 <form [formGroup]="form" (ngSubmit)="createClient()" class="client-form">
   <mat-form-field appearance="fill">
     <mat-label>Имя</mat-label>
-    <input matInput formControlName="name" />
-    <mat-error *ngIf="form.get('name')?.hasError('required')">
+    <input matInput formControlName="fio" />
+    <mat-error *ngIf="form.get('fio')?.hasError('required')">
       Имя обязательно
     </mat-error>
   </mat-form-field>
