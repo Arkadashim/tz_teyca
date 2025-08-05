@@ -5,15 +5,15 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatDialog, MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
+import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule, Sort } from "@angular/material/sort";
 import { MatTableDataSource, MatTableModule } from "@angular/material/table";
 import { Router } from "@angular/router";
 import { IClient, IGetClientsRequest } from "@tecya/interfaces";
-import { ClientFormComponent, PushDialogComponent } from "../shared/components";
 import { AuthService } from "../shared/auth/auth.service";
 import { ClientService } from "../shared/clients";
-import { CustomInput } from "../shared/components/custom-input";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import { ClientFormComponent, PushDialogComponent } from "../shared/components";
+import { PhoneInputComponent } from "../shared/components/phone-number-input/phone-number";
 
 @Component({
   standalone: true,
@@ -32,7 +32,8 @@ import { MatPaginatorModule } from "@angular/material/paginator";
     FormsModule,
     ReactiveFormsModule,
     ClientFormComponent,
-    CustomInput,
+    PhoneInputComponent,
+    PhoneInputComponent,
   ],
 })
 export class HomeComponent implements OnInit {
@@ -44,6 +45,7 @@ export class HomeComponent implements OnInit {
     "actions",
   ];
   dataSource = new MatTableDataSource<IClient>();
+
   pageSize = 10;
   pageIndex = 0;
   searchQuery: string = "";
@@ -77,6 +79,15 @@ export class HomeComponent implements OnInit {
         console.error("Не получен список клиентов!", error);
       },
     });
+  }
+
+  clearPhone() {
+    this.searchQuery = "";
+  }
+
+  onPhoneCompleted(value: string) {
+    this.searchQuery = value;
+    this.loadClients();
   }
 
   applyFilter() {

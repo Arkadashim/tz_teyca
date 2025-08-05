@@ -17,7 +17,6 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { ClientService } from "../../clients";
-import { CustomInput } from "../custom-input/custom-input";
 
 @Component({
   standalone: true,

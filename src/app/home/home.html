@@ -1,14 +1,9 @@
 <div class="container">
   <h1>Клиенты</h1>
-  <mat-form-field appearance="fill" class="search-field">
-    <mat-label>Поиск</mat-label>
-    <input
-      matInput
-      [(ngModel)]="searchQuery"
-      (input)="applyFilter()"
-      placeholder="Введите имя или email"
-    />
-  </mat-form-field>
+  <phone-number-input
+    (phoneChange)="clearPhone()"
+    (phoneCompleted)="onPhoneCompleted($event)"
+  ></phone-number-input>
 
   <client-form (clientCreated)="loadClients()"></client-form>
 
@@ -49,11 +44,7 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  <mat-paginator
-    #paginator
-    [pageSize]="pageSize"
-    [pageIndex]="pageIndex"
-  >
+  <mat-paginator #paginator [pageSize]="pageSize" [pageIndex]="pageIndex">
   </mat-paginator>
   <button mat-raised-button color="warn" (click)="logout()">Выйти</button>
 </div>
