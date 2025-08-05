@@ -78,7 +78,7 @@ export class HomeComponent implements OnInit {
 
     const clients$ = this.clientService.getClients(search);
     const clients = await firstValueFrom(clients$);
-    
+
     this.dataSource.data = clients;
   }
 
@@ -112,7 +112,7 @@ export class HomeComponent implements OnInit {
 
   openPushDialog(client: IClient) {
     this.dialog.open(PushDialogComponent, {
-      data: { clientId: client.user_id },
+      data: { user_id: client.user_id },
       width: "400px",
     });
   }
