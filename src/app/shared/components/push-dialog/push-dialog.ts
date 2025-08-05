@@ -34,14 +34,14 @@ export class PushDialogComponent {
   ) {}
 
   sendPush() {
-    if (this.message.trim()) {
-      this.clientService.sendPush(this.data.user_id, this.message).subscribe({
-        next: () => this.dialogRef.close(true),
-        error: (error) => {
-          console.error("Ошибка отправки!", error);
-          this.dialogRef.close(false);
-        },
-      });
-    }
+    if (!this.message.trim()) return;
+
+    this.clientService.sendPush(this.data.user_id, this.message).subscribe({
+      next: () => this.dialogRef.close(true),
+      error: (error) => {
+        console.error("Ошибка отправки!", error);
+        this.dialogRef.close(false);
+      },
+    });
   }
 }
