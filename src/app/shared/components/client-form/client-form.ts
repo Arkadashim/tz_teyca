@@ -17,6 +17,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { ClientService } from "../../clients";
+import { firstValueFrom } from "rxjs";
 
 @Component({
   standalone: true,
@@ -44,20 +45,13 @@ export class ClientFormComponent {
     });
   }
 
-  createClient() {
+  async createClient() {
     if (!this.form.valid) return;
 
-    this.clientService
-      .createClient(this.form.value)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: () => {
-          this.clientCreated.emit();
-          this.form.reset();
-        },
-        error: (error) => {
-          console.error("Ошибка создания!", error);
-        },
-      });
+    const create$ = this.clientService.createClient(this.form.value);
+    await firstValueFrom(create$);
+
+    this.clientCreated.emit();
+    this.form.reset();
   }
 }
