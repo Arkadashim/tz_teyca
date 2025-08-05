@@ -41,7 +41,7 @@ export class ClientFormComponent {
     this.form = this.fb.group({
       name: ["", Validators.required],
       email: ["", [Validators.required, Validators.email]],
-      template: ["", Validators.required],
+      template: ["Тестовый", Validators.required],
     });
   }
 
