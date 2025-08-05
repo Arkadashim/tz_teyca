@@ -1,4 +1,4 @@
-import { Component, Inject } from "@angular/core";
+import { Component, DestroyRef, inject, Inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import {
@@ -10,6 +10,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { IClient } from "@tecya/interfaces";
 import { ClientService } from "../../clients";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
   standalone: true,
@@ -26,6 +27,7 @@ import { ClientService } from "../../clients";
 })
 export class PushDialogComponent {
   message: string = "";
+  destroyRef = inject(DestroyRef);
 
   constructor(
     private clientService: ClientService,
@@ -36,12 +38,15 @@ export class PushDialogComponent {
   sendPush() {
     if (!this.message.trim()) return;
 
-    this.clientService.sendPush(this.data.user_id, this.message).subscribe({
-      next: () => this.dialogRef.close(true),
-      error: (error) => {
-        console.error("Ошибка отправки!", error);
-        this.dialogRef.close(false);
-      },
-    });
+    this.clientService
+      .sendPush(this.data.user_id, this.message)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => this.dialogRef.close(true),
+        error: (error) => {
+          console.error("Ошибка отправки!", error);
+          this.dialogRef.close(false);
+        },
+      });
   }
 }
