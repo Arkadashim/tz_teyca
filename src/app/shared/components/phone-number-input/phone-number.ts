@@ -94,7 +94,6 @@ export class PhoneInputComponent
       }
     }
 
-    console.log(formatted);
     return formatted;
   }
 
