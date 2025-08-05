@@ -16,6 +16,7 @@ import { ClientFormComponent, PushDialogComponent } from "../shared/components";
 import { PhoneInputComponent } from "../shared/components/phone-number-input/phone-number";
 import { compare } from "../shared/helpers";
 import { PhoneNumberPipe } from "../shared/pipes/phone-number.pipe";
+import { firstValueFrom } from "rxjs";
 
 @Component({
   standalone: true,
@@ -61,11 +62,11 @@ export class HomeComponent implements OnInit {
     private dialog: MatDialog
   ) {}
 
-  ngOnInit() {
-    this.loadClients();
+  async ngOnInit() {
+    await this.loadClients();
   }
 
-  loadClients() {
+  async loadClients() {
     const search: IGetClientsRequest = {
       limit: this.pageSize,
       offest: this.pageIndex * this.pageSize,
@@ -75,14 +76,10 @@ export class HomeComponent implements OnInit {
       search.search = `phone=${this.searchQuery}`;
     }
 
-    this.clientService.getClients(search).subscribe({
-      next: (clients: any) => {
-        this.dataSource.data = clients;
-      },
-      error: (error: any) => {
-        console.error("Не получен список клиентов!", error);
-      },
-    });
+    const clients$ = this.clientService.getClients(search);
+    const clients = await firstValueFrom(clients$);
+    
+    this.dataSource.data = clients;
   }
 
   clearPhone() {
