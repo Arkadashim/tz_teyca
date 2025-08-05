@@ -4,6 +4,7 @@ import {
   IClient,
   IGetClientsRequest,
   IGetClientsResponse,
+  IPushMessage,
 } from "@tecya/interfaces";
 import { map, Observable } from "rxjs";
 import { ENVIRONMENT } from "../../app.config";
@@ -35,10 +36,10 @@ export class ClientService {
     );
   }
 
-  sendPush(clientId: number, message: string): Observable<any> {
-    return this.http.post(`${this.environment.apiUrl}/push`, {
-      clientId,
-      message,
-    });
+  sendPush(push: IPushMessage): Observable<any> {
+    return this.http.post(
+      `${this.environment.apiUrl}/v1/${this.authService.token}/message/push`,
+      push
+    );
   }
 }

@@ -39,7 +39,11 @@ export class PushDialogComponent {
     if (!this.message.trim()) return;
 
     this.clientService
-      .sendPush(this.data.user_id, this.message)
+      .sendPush({
+        user_id: this.data.user_id,
+        date_start: new Date(),
+        push_message: this.message,
+      })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => this.dialogRef.close(true),
