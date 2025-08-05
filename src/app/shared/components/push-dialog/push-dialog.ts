@@ -40,8 +40,7 @@ export class PushDialogComponent {
 
     this.clientService
       .sendPush({
-        user_id: this.data.user_id,
-        date_start: new Date(),
+        user_id: this.data.user_id.toString(),
         push_message: this.message,
       })
       .pipe(takeUntilDestroyed(this.destroyRef))
