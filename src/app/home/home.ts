@@ -10,17 +10,18 @@ import {
   MatPaginatorModule,
   PageEvent,
 } from "@angular/material/paginator";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatSortModule, Sort } from "@angular/material/sort";
 import { MatTableDataSource, MatTableModule } from "@angular/material/table";
 import { Router } from "@angular/router";
 import { IClient, IGetClientsRequest } from "@tecya/interfaces";
+import { firstValueFrom } from "rxjs";
 import { AuthService } from "../shared/auth/auth.service";
 import { ClientService } from "../shared/clients";
 import { ClientFormComponent, PushDialogComponent } from "../shared/components";
 import { PhoneInputComponent } from "../shared/components/phone-number-input/phone-number";
 import { compare } from "../shared/helpers";
 import { PhoneNumberPipe } from "../shared/pipes/phone-number.pipe";
-import { firstValueFrom } from "rxjs";
 
 @Component({
   standalone: true,
@@ -35,6 +36,7 @@ import { firstValueFrom } from "rxjs";
     MatInputModule,
     MatFormFieldModule,
     MatSortModule,
+    MatProgressBarModule,
     MatDialogModule,
     FormsModule,
     ReactiveFormsModule,
@@ -60,6 +62,7 @@ export class HomeComponent implements OnInit {
   pageSize = this.paginationSizeOptions[0];
   pageIndex = 0;
   searchQuery: string = "";
+  isLoading = false;
 
   constructor(
     private authService: AuthService,
@@ -74,6 +77,8 @@ export class HomeComponent implements OnInit {
   }
 
   async loadClients() {
+    this.isLoading = true;
+
     const search: IGetClientsRequest = {
       limit: this.pageSize,
       offset: this.pageIndex * this.pageSize,
@@ -84,7 +89,9 @@ export class HomeComponent implements OnInit {
     }
 
     const clients$ = this.clientService.getClients(search);
-    const clients = await firstValueFrom(clients$);
+    const clients = await firstValueFrom(clients$).finally(() => {
+      this.isLoading = false;
+    });
 
     this.dataSource.data = clients;
     this.applyPaginatorChanges();
