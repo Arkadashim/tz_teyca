@@ -1,11 +1,15 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog, MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
-import { MatPaginatorModule } from "@angular/material/paginator";
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from "@angular/material/paginator";
 import { MatSortModule, Sort } from "@angular/material/sort";
 import { MatTableDataSource, MatTableModule } from "@angular/material/table";
 import { Router } from "@angular/router";
@@ -41,7 +45,8 @@ import { firstValueFrom } from "rxjs";
   ],
 })
 export class HomeComponent implements OnInit {
-  displayedColumns: string[] = [
+  readonly paginationSizeOptions = [10, 15, 20];
+  readonly displayedColumns: string[] = [
     "user_id",
     "fio",
     "email",
@@ -50,8 +55,9 @@ export class HomeComponent implements OnInit {
     "actions",
   ];
   dataSource = new MatTableDataSource<IClient>();
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  pageSize = 10;
+  pageSize = this.paginationSizeOptions[0];
   pageIndex = 0;
   searchQuery: string = "";
 
@@ -63,13 +69,14 @@ export class HomeComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    this.dataSource.paginator = this.paginator;
     await this.loadClients();
   }
 
   async loadClients() {
     const search: IGetClientsRequest = {
       limit: this.pageSize,
-      offest: this.pageIndex * this.pageSize,
+      offset: this.pageIndex * this.pageSize,
     };
 
     if (this.searchQuery) {
@@ -80,6 +87,7 @@ export class HomeComponent implements OnInit {
     const clients = await firstValueFrom(clients$);
 
     this.dataSource.data = clients;
+    this.applyPaginatorChanges();
   }
 
   clearPhone() {
@@ -91,8 +99,12 @@ export class HomeComponent implements OnInit {
     this.loadClients();
   }
 
-  applyFilter() {
-    this.dataSource.filter = this.searchQuery.trim().toLowerCase();
+  onPageChange(event: PageEvent) {
+    // При изменении количества записей на страницу, вернемся на начальную страницу
+    this.pageIndex = this.pageSize !== event.pageSize ? 0 : event.pageIndex;
+    this.pageSize = event.pageSize;
+
+    this.loadClients();
   }
 
   sortData(sort: Sort) {
@@ -120,5 +132,15 @@ export class HomeComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.router.navigate(["/login"]);
+  }
+
+  // API не возвращает информацию о максимальном количестве элементов, поэтому пусть наращивается динамически
+  private applyPaginatorChanges() {
+    const tableLength = this.dataSource.data.length;
+    const tableHasMoreData = tableLength === this.pageSize;
+
+    this.paginator.length = tableHasMoreData
+      ? (this.pageIndex + 1) * this.pageSize + 1
+      : this.pageIndex * this.pageSize + tableLength;
   }
 }

@@ -48,7 +48,17 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  <mat-paginator #paginator [pageSize]="pageSize" [pageIndex]="pageIndex">
+
+  <mat-paginator
+    #paginator
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    [pageSizeOptions]="paginationSizeOptions"
+    [showFirstLastButtons]="false"
+    [disabled]="false"
+    (page)="onPageChange($event)"
+  >
   </mat-paginator>
+
   <button mat-raised-button color="warn" (click)="logout()">Выйти</button>
 </div>

@@ -8,7 +8,7 @@ export interface IClient {
 export interface IGetClientsRequest {
   search?: string;
   limit: number;
-  offest: number;
+  offset: number;
 }
 
 export interface IGetClientsResponse {
