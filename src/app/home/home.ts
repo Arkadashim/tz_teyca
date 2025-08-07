@@ -91,7 +91,10 @@ export class HomeComponent implements OnInit {
   }
 
   clearPhone() {
+    if (this.searchQuery === "") return;
+
     this.searchQuery = "";
+    this.loadClients();
   }
 
   onPhoneCompleted(value: string) {

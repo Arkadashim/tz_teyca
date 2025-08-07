@@ -3,6 +3,7 @@
   <client-form (clientCreated)="loadClients()"></client-form>
 
   <phone-number-input
+    (clear)="clearPhone()"
     (phoneChange)="clearPhone()"
     (phoneCompleted)="onPhoneCompleted($event)"
   ></phone-number-input>
