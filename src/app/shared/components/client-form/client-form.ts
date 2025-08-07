@@ -6,7 +6,6 @@ import {
   inject,
   Output,
 } from "@angular/core";
-import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import {
   FormBuilder,
   FormGroup,
@@ -16,9 +15,9 @@ import {
 import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
-import { ClientService } from "../../clients";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { firstValueFrom } from "rxjs";
-import { IClient } from "@tecya/interfaces";
+import { ClientService } from "../../clients";
 
 @Component({
   standalone: true,
@@ -30,6 +29,7 @@ import { IClient } from "@tecya/interfaces";
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatProgressBarModule,
     CommonModule,
   ],
 })
@@ -37,6 +37,7 @@ export class ClientFormComponent {
   destroyRef = inject(DestroyRef);
   @Output() clientCreated = new EventEmitter<void>();
   form: FormGroup;
+  isCreating = false;
 
   constructor(private fb: FormBuilder, private clientService: ClientService) {
     this.form = this.fb.group({
@@ -47,12 +48,41 @@ export class ClientFormComponent {
   }
 
   async createClient() {
-    if (!this.form.valid) return;
+    if (!this.validateForm()) return;
+
+    this.isCreating = true;
 
     const create$ = this.clientService.createClient(this.form.value);
-    await firstValueFrom(create$);
+    await firstValueFrom(create$).finally(() => {
+      this.isCreating = false;
+    });
 
     this.clientCreated.emit();
-    this.form.reset();
+
+    this.resetForm();
+  }
+
+  private resetForm() {
+    for (let [key, control] of Object.entries(this.form.controls)) {
+      if (key === "template") continue;
+
+      control.reset();
+      control.setErrors(null);
+    }
+  }
+
+  private validateForm() {
+    let isValid = true;
+
+    for (let control of Object.values(this.form.controls)) {
+      control.updateValueAndValidity();
+      control.markAsTouched();
+
+      if (control.invalid) {
+        isValid = false;
+      }
+    }
+
+    return isValid;
   }
 }
